@@ -1,0 +1,23 @@
+ion-list{
+  --background:var(--ion-color-dark) ;
+}
+
+ion-button {
+    width: 30vh;
+    margin: auto;
+    --border: none;
+  }
+
+  .slide-in-from-bottom {
+    width: 100%;
+    animation: slideInFromBottom 2s ease-out;
+  }
+  
+  @keyframes slideInFromBottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }

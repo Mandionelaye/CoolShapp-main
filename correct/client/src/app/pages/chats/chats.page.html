@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+      <ion-buttons slot="start" *ngFor="let item of senderId |async">
+        <ion-back-button text="" color="light" defaultHref="/messenger" (click)="popConv()" ></ion-back-button>
+          <ion-avatar (click)="getProfilPage(item?._id)">
+            <img [src]="item?.photo" alt="">
+          </ion-avatar>
+          <ion-label (click)="getProfilPage(item?._id)">
+            <ion-text>{{item?.prenom+" "+ item?.nom}}</ion-text>
+            <ion-note>
+              <small *ngIf="live">en ligne</small>
+            </ion-note>
+          </ion-label>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list 
+  lines="none"
+  *ngIf="(messages) as chat$">
+   <ion-item-group class="chats-group" *ngFor="let chat of chat$">
+      <app-chat-box [chat] ="chat"  [user_id] ="userId"></app-chat-box>
+   </ion-item-group>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-textarea
+    *ngIf="!photo"
+    autoGrow
+    rows="1"
+    placeholder="envoie message"
+    class="ion-text-center"
+    [(ngModel)]="message">
+    </ion-textarea>
+    <ion-img *ngIf="photo" [src]="photo"></ion-img>
+    <ion-buttons slot="end" *ngIf="!message && !photo">
+      <ion-button color="primary" class="text" (click)="click()">
+        <ion-icon name="camera-outline"></ion-icon>
+        <input type="file" id="loge" accept='image/*' hidden (change)="subimitModif($event)"/>
+      </ion-button>
+      <ion-button color="primary" class="text" (click)="click()">
+        <ion-icon name="mic-outline"></ion-icon>
+        <input type="file" id="loge" accept='image/*' hidden (change)="subimitModif($event)"/>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end" *ngIf="message || photo">
+      <ion-fab-button *ngIf="!isLoading" size="samll" (click)="sendMessage()">
+         <ion-icon name="send"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="isLoading" size="samll">
+          <ion-spinner name="crescent" color="white"></ion-spinner>
+      </ion-fab-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

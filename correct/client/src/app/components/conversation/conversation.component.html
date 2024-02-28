@@ -1,0 +1,25 @@
+<ion-item 
+(click)="getChat(conversation._id)"
+[detail]="true" 
+>
+ <ion-avatar slot="start">
+      <img [src]="userc[0].photo" />
+  </ion-avatar>
+  <ion-label>
+    {{userc[0].prenom+" "+ userc[0].nom}} 
+    <p>
+      <ion-text *ngIf="lastMessage?.text">
+        {{lastMessage?.text}}
+      </ion-text>
+      <ion-text *ngIf="lastMessage?.photo">
+        <ion-icon name="camera-outline" ></ion-icon> Photo
+      </ion-text>
+    </p>
+  </ion-label>
+  <ion-text slot="end" color="medium" class="text">
+    {{lastMessage?.createdAt | date : 'd MMM, HH:mm'}}
+    <ion-badge *ngIf="longMessages" color="primary" class="ms-2 text">{{longMessages}}</ion-badge>
+  </ion-text>
+</ion-item>  
+
+

@@ -1,0 +1,112 @@
+<ion-header [translucent]="true" *ngIf="user | async as use$">
+  <ion-toolbar *ngIf="user | async as use$">
+    <ion-buttons *ngIf="userChat">
+      <ion-back-button  text="" color="light"  (click)="outProfil()"></ion-back-button>
+      <ion-label class="m-auto">info du contact</ion-label>
+    </ion-buttons>
+    <ion-avatar >
+      <ion-img *ngIf="!urlPhoto" [src]="use$.photo" class="avatar" width="100" (click)="setOpen(true)"></ion-img>
+      <ion-img *ngIf="urlPhoto" [src]="urlPhoto" class="avatar" width="100" (click)="setOpen(true)"></ion-img>
+
+      <ion-badge color="primary" class="ms-2 text" (click)="click()" *ngIf="!userChat">
+        <ion-icon name="pencil-outline"></ion-icon>
+        <input type="file" id="loge" accept='image/*' hidden (change)="subimitModif($event)"/>
+      </ion-badge>
+
+    </ion-avatar>
+    <ion-label *ngIf="use$.bio" class="ms-3">{{use$.bio?use$.bio.slice(0,40)+"...":"bio..."}}</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="user | async as use$">
+    <ion-list [inset]="true" *ngIf="use$">
+      <ion-item *ngIf="use$.prenom"> 
+        <ion-badge color="success" slot="start" size="large">
+          <ion-icon color="light" name="person"></ion-icon>
+        </ion-badge>
+        <ion-label>{{use$.prenom}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="use$.nom">
+        <ion-badge color="warning" size="large" slot="start">
+          <ion-icon color="light" name="person" ></ion-icon>
+        </ion-badge>
+        <ion-label>{{use$.nom}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="use$.email">
+        <ion-badge slot="start" color="secondary" size="large">
+          <ion-icon  name="mail"></ion-icon>
+        </ion-badge>
+        <ion-label>{{use$.email}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="use$.tel">
+        <ion-badge slot="start" color="tertiary" size="large">
+          <ion-icon  name="call" ></ion-icon>
+        </ion-badge>
+        <ion-label>{{use$.tel}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="numMssg">
+        <ion-badge slot="start" color="light" size="large">
+          <ion-icon color="dark" name="chatbubble-sharp" ></ion-icon>
+        </ion-badge>
+        <ion-label>Total Messages</ion-label>
+        <ion-note slot="end">{{numMssg}}</ion-note>
+      </ion-item>
+    </ion-list>
+    <ion-list [inset]="true"  *ngIf="use$">
+      <ion-item *ngIf="!userChat" (click)="logout()">
+        <ion-badge slot="start" color="danger" size="large">
+          <ion-icon name="log-out" ></ion-icon>
+        </ion-badge>
+       <ion-label color="danger">Deconnection</ion-label>
+      </ion-item>
+      <ion-item *ngIf="userChat" (click)="suppConv()">
+        <ion-badge slot="start" color="danger" size="large">
+          <ion-icon  name="trash" ></ion-icon>
+        </ion-badge>
+        <ion-label color="danger">Effacer la discussion</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <!-- Modal imgae -->
+    <ion-modal [isOpen]="isModalOpen" *ngIf="use$">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Image</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="setOpen(false)"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding ion-text-center">
+          <div class="cont">
+            <ion-img *ngIf="use$.photo" [src]="use$.photo" class="affImg"></ion-img>
+            <ion-text *ngIf="!use$.photo">Error !</ion-text>
+          </div>
+        </ion-content>
+        <ion-footer>
+          <ion-toolbar>
+            <a [href]="use$.photo" download="image_Profil/*"><ion-icon name="download-outline" size="small"></ion-icon></a>
+          </ion-toolbar>
+        </ion-footer>
+      </ng-template>
+    </ion-modal>
+    <ion-loading *ngIf="!use$" message="Loading..." [duration]="3000" spinner="circles"></ion-loading>
+</ion-content>
+
+
+<ion-footer *ngIf="!userChat">
+  <ion-toolbar>
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+      <ion-tab-button routerLink="/messenger">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <ion-badge *ngIf="filtMessage" color="primary">{{filtMessage}}</ion-badge>
+      </ion-tab-button>
+      <ion-tab-button selected>
+        <ion-icon name="person-outline"></ion-icon>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-toolbar>
+</ion-footer>

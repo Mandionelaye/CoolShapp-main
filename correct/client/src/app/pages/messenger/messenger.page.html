@@ -1,0 +1,86 @@
+<ion-header class="title-header">
+  <ion-toolbar>
+    <div>
+    <ion-avatar slot="start" routerLink="/profil" *ngIf="user | async as user$">
+      <img [src]="user$.photo" alt="">
+    </ion-avatar>
+    <ion-input placeholder="Rechercher dans les messages" type="text" [ngModel]="queryConv" (ngModelChange)="setQeryConv($event)"></ion-input>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" id="popover" >
+          <ion-icon slot="icon-only" name="menu-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    </div>
+      <ion-popover #popover trigger="popover" triggerAction="click">
+        <ng-template>
+           <ion-content class="ion-padding ion-text-center" (click)="logout()">
+              <ion-label color="danger">
+                Logout
+              </ion-label>
+           </ion-content>
+        </ng-template>
+      </ion-popover>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="dark">  
+  <ion-list *ngIf="(chatConevers | async)">
+    <ion-list-header class="ion-padding-bottom" color="dark" >Recent Chats bienveneau</ion-list-header>
+    <app-conversation *ngFor="let item of chatConevers | async" [conversation]="item" [userIdCon]="userId" [socket]="socket"></app-conversation>
+    
+    <ion-item [detail]="true" *ngIf="conv.length === 0" color="dark">
+    <ion-avatar slot="start">
+          <img [src]="userDefault.photo" />
+      </ion-avatar>
+      <ion-label>
+        {{userDefault.name}} 
+        <p>
+          <ion-text>
+            Bienvenue sur CoolShapp
+          </ion-text>
+        </p>
+      </ion-label>
+      <ion-text slot="end" color="medium" class="text">
+        {{userDefault.date| date : 'd MMM, HH:mm'}}
+      </ion-text>
+    </ion-item>  
+  </ion-list>
+
+  <ion-fab slot="" horizontal="end" vertical="bottom">
+    <ion-fab-button id="open-modal">
+        <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <ion-modal #modal trigger="open-modal" [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="dark">
+          <ion-title>Nouv. discussion</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="modal.dismiss()">
+              <ion-icon name="close-circle-outline" color="primary"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content color="dark">
+        <div class="recher">
+          <ion-searchbar class="recherche" placeholder="Rechercher..." type="text" [ngModel]="query" (ngModelChange)="setQery($event)" ></ion-searchbar>
+        </div>
+        <ion-list *ngFor="let item of search">
+          <ion-item [detail]="true" (click)="setConversation(item._id)">
+            <ion-avatar slot="start">
+              <ion-img [src]="item.photo"></ion-img>
+            </ion-avatar>
+            <ion-label>
+              <h2>{{item.prenom+" "+item.nom}}</h2>
+              <p>{{item.email}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+<app-tab-bar [filtMessage]="filtMessage"></app-tab-bar>

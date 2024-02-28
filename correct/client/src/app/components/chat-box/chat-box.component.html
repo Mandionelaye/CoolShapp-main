@@ -1,0 +1,42 @@
+<ion-item
+lines="none"
+[class]="chat?.sender[0]?._id != user_id ? 'sender' : 'user'"
+>
+  <div
+  [slot]="chat?.sender[0]?._id  == user_id ? 'end' : 'start'" 
+  class="ion-text-wrap"
+  >
+    <ion-text *ngIf="chat?.text">{{chat?.text}}</ion-text>
+    <ion-img *ngIf="chat?.photo" [src]="chat?.photo" (click)="setOpen(true, chat?.photo)"></ion-img>
+    <ion-note [class]="chat?.text?.length > 20 ? 'flexnote':'note'">
+      <!-- <small>{{(chat?.createdAt) | date: 'HH:mm'}}</small> -->
+      <small>{{time}}</small>
+      <ion-icon *ngIf="chat?.sender[0]?._id == user_id" color="light"
+      name="checkmark-done-outline"></ion-icon>
+    </ion-note>
+  </div>
+</ion-item>
+
+<ion-modal [isOpen]="isModalOpen" *ngIf="chat?.photo">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Image</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="setOpen(false, '')"><ion-icon name="close-circle-outline"></ion-icon></ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding ion-text-center">
+      <div class="cont">
+        <ion-img *ngIf="photo" [src]="photo" class="affImg"></ion-img>
+        <ion-text *ngIf="!photo">Error !</ion-text>
+      </div>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <a [href]="photo" download="image/*"><ion-icon name="download-outline" size="small"></ion-icon></a>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>

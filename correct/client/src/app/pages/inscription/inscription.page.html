@@ -1,0 +1,173 @@
+<ion-content [fullscreen]="true">
+  <div class="circleBase type2 circle1"></div>
+  <div class="circleBase type1"></div>
+  <div class="circleBase type2 circle2"></div>
+
+  <ion-label class="welcomeMessage">
+    <ion-text color="light">CoolShapp</ion-text> 
+    <ion-text color="white">
+      <p>Inscription</p>
+    </ion-text>
+  </ion-label> 
+
+  <ion-icon 
+    name="arrow-back-outline" 
+    color="white"
+    class="backButton"
+    routerLink="/home">
+  </ion-icon>
+
+  <form [formGroup]="inscForm">
+    <ion-list lines="none" class="ion-margin ion-padding ion-text-center">
+      <ion-list-header>
+        <ion-text color="danger">{{message}}</ion-text>
+        </ion-list-header>
+      <!-- Partie 1 -->
+      <div *ngIf="partie1">
+      <ion-item class="ion-margin-vertical">
+        <ion-icon 
+          name="person-outline" slot="end" color="medium">
+        </ion-icon>
+        <ion-input 
+          type="text"
+          formControlName="nom" 
+          placeholder="Entre votre nom"
+          [(ngModel)]="nom"
+          >
+        </ion-input>
+      </ion-item>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!inscForm.get('nom')?.valid && inscForm.get('nom')?.touched">
+        <p class="error">*SVP entre votre nom </p>
+      </ion-text>
+
+      <ion-item class="ion-margin-vertical">
+        <ion-icon 
+          name="person-outline" slot="end" color="medium">
+        </ion-icon>
+        <ion-input 
+          type="text"
+          formControlName="prenom" 
+          [(ngModel)]="prenom"
+          placeholder="Entre votre Prénom">
+        </ion-input>
+      </ion-item>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!inscForm.get('prenom')?.valid && inscForm.get('prenom')?.touched">
+        <p class="error">*SVP entre votre prenom </p>
+      </ion-text>
+
+      <ion-item class="ion-margin-vertical">
+        <ion-icon 
+          name="mail-outline" slot="end" color="medium">
+        </ion-icon>
+        <ion-input
+          type="email" 
+          formControlName="email" 
+          [(ngModel)]="email"
+          placeholder="Entre votre adresse Email">
+        </ion-input>
+      </ion-item>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!inscForm.get('email')?.valid && inscForm.get('email')?.touched">
+        <p class="error">*svp entre votre adresse Email</p>
+      </ion-text>
+      <ion-button *ngIf="partie1" class="insc" shape="round" (click)="changeParti1()">suivant</ion-button>
+    </div>
+    <!-- Partie2 -->
+    <div *ngIf="partie2" data-aos="fade-left" ata-aos-once="true">
+      <ion-button class="btn" slot="start" (click)="partie2=false; partie1=true">
+        <ion-icon name="arrow-back-outline" slot="end" color="medium" size="large"></ion-icon>
+      </ion-button>
+
+      <ion-item class="ion-margin-vertical">
+        <ion-icon 
+          name="call-outline" slot="end" color="medium">
+        </ion-icon>
+        <ion-input 
+          type="tel"
+          formControlName="tel" 
+          [(ngModel)]="tel"
+          placeholder="Entre votre numero de tel" 
+          maxlength="9"
+          minlength="9">
+        </ion-input>
+      </ion-item>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!inscForm.get('tel')?.valid && inscForm.get('tel')?.touched">
+        <p class="error">*SVP entre votre numéro </p>
+        <p 
+        class="error" 
+        *ngIf="inscForm.get('tel')?.dirty">
+        *le numero de telephone est de 9 chiffres
+        </p>
+      </ion-text>
+
+      <ion-item class="ion-margin-vertical">
+        <ion-icon 
+          name="reader-outline" slot="end" color="medium">
+        </ion-icon>
+        <ion-input 
+          type="string"
+          formControlName="bio" 
+          [(ngModel)]="bio"
+          placeholder="Entre votre biographie">
+        </ion-input>
+      </ion-item>
+      <ion-text 
+        class="ion-text-left"
+        color="danger"
+        *ngIf="!inscForm.get('bio')?.valid && inscForm.get('bio')?.touched">
+        <p class="error">*SVP entre votre bio </p>
+      </ion-text>
+
+      <ion-item class="ion-margin-vertical">
+        <ion-icon (click)="onChange()"
+        [name]="isTypePassword ? 'lock-closed-outline' : 'lock-open-outline'" 
+        slot="end" 
+        [color]="isTypePassword ? 'medium' : 'primary'">
+      </ion-icon>
+      <ion-input 
+      formControlName="password" 
+      [type]="isTypePassword ? 'password' : 'text'"
+      [(ngModel)]="password"
+      placeholder="votre mots passe">
+    </ion-input>
+    </ion-item>
+    <ion-text 
+    class="ion-text-left"
+    color="danger"
+    *ngIf="!inscForm.get('password')?.valid && inscForm.get('password')?.touched">
+    <p 
+    class="error" 
+    *ngIf="inscForm.get('password')?.invalid && inscForm.get('password')?.errors">
+    *Please enter your Password
+  </p>
+  <p 
+  class="error" 
+  *ngIf="inscForm.get('password')?.dirty">
+  *Password must be of atleast 8 characters
+  </p>
+  </ion-text>
+  </div>
+      <ion-button *ngIf="partie2" class="insc" shape="round" (click)="onSubmit()">valider</ion-button>
+
+      <p class="con">
+        <ion-note>
+          vous vouliez vous ?
+          <ion-text class="ins" routerLink="/login"
+            >connecter</ion-text
+          >
+        </ion-note>
+      </p>
+    </ion-list>
+  </form>
+</ion-content>
